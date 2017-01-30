@@ -1,0 +1,231 @@
+SampleName,Catchment,CommonName,ScientificName,Count,Longitude,Latitude,Date
+Sample009,9.2,bluegill,Lepomis macrochirus,1,-80.800667,37.54825,7/8/2008
+Sample009,9.2,bluehead chub,Nocomis leptocephalus,24,-80.800667,37.54825,7/8/2008
+Sample009,9.2,central stoneroller,Campostoma anomalum,27,-80.800667,37.54825,7/8/2008
+Sample009,9.2,creek chub,Semotilus atromaculatus,14,-80.800667,37.54825,7/8/2008
+Sample009,9.2,fantail darter,Etheostoma flabellare,9,-80.800667,37.54825,7/8/2008
+Sample009,9.2,white sucker,Catostomus commersonii,12,-80.800667,37.54825,7/8/2008
+Sample047,22.4,bluehead chub,Nocomis leptocephalus,1,-81.024722,37.536222,6/16/2011
+Sample047,22.4,central stoneroller,Campostoma anomalum,21,-81.024722,37.536222,6/16/2011
+Sample047,22.4,creek chub,Semotilus atromaculatus,65,-81.024722,37.536222,6/16/2011
+Sample047,22.4,fantail darter,Etheostoma flabellare,8,-81.024722,37.536222,6/16/2011
+Sample047,22.4,green sunfish,Lepomis cyanellus,1,-81.024722,37.536222,6/16/2011
+Sample047,22.4,greenside darter,Etheostoma blennioides,1,-81.024722,37.536222,6/16/2011
+Sample047,22.4,longnose dace,Rhinichthys cataractae,28,-81.024722,37.536222,6/16/2011
+Sample047,22.4,northern hog sucker,Hypentelium nigricans,18,-81.024722,37.536222,6/16/2011
+Sample047,22.4,rainbow darter,Etheostoma caeruleum,52,-81.024722,37.536222,6/16/2011
+Sample047,22.4,rainbow trout,Oncorhynchus mykiss,156,-81.024722,37.536222,6/16/2011
+Sample047,22.4,rosyside dace,Clinostomus funduloides,136,-81.024722,37.536222,6/16/2011
+Sample047,22.4,smallmouth bass,Micropterus dolomieu,2,-81.024722,37.536222,6/16/2011
+Sample047,22.4,western blacknose dace,Rhinichthys obtusus,8,-81.024722,37.536222,6/16/2011
+Sample048,17,creek chub,Semotilus atromaculatus,51,-81.131,37.522278,8/3/2011
+Sample048,17,fantail darter,Etheostoma flabellare,64,-81.131,37.522278,8/3/2011
+Sample048,17,green sunfish,Lepomis cyanellus,13,-81.131,37.522278,8/3/2011
+Sample048,17,rainbow trout,Oncorhynchus mykiss,4,-81.131,37.522278,8/3/2011
+Sample048,17,western blacknose dace,Rhinichthys obtusus,127,-81.131,37.522278,8/3/2011
+Sample048,17,white sucker,Catostomus commersonii,16,-81.131,37.522278,8/3/2011
+Sample049,12.4,bigmouth chub,Nocomis platyrhynchus,1,-81.134694,37.503667,6/15/2011
+Sample049,12.4,central stoneroller,Campostoma anomalum,23,-81.134694,37.503667,6/15/2011
+Sample049,12.4,creek chub,Semotilus atromaculatus,142,-81.134694,37.503667,6/15/2011
+Sample049,12.4,fantail darter,Etheostoma flabellare,167,-81.134694,37.503667,6/15/2011
+Sample049,12.4,greenside darter,Etheostoma blennioides,3,-81.134694,37.503667,6/15/2011
+Sample049,12.4,longnose dace,Rhinichthys cataractae,13,-81.134694,37.503667,6/15/2011
+Sample049,12.4,mountain redbelly dace,Phoxinus oreas,175,-81.134694,37.503667,6/15/2011
+Sample049,12.4,western blacknose dace,Rhinichthys obtusus,126,-81.134694,37.503667,6/15/2011
+Sample049,12.4,white sucker,Catostomus commersonii,4,-81.134694,37.503667,6/15/2011
+Sample062,11.8,central stoneroller,Campostoma anomalum,49,-80.991639,37.626167,7/12/2012
+Sample062,11.8,creek chub,Semotilus atromaculatus,152,-80.991639,37.626167,7/12/2012
+Sample062,11.8,fantail darter,Etheostoma flabellare,162,-80.991639,37.626167,7/12/2012
+Sample062,11.8,mountain redbelly dace,Phoxinus oreas,252,-80.991639,37.626167,7/12/2012
+Sample062,11.8,western blacknose dace,Rhinichthys obtusus,89,-80.991639,37.626167,7/12/2012
+Sample062,11.8,white sucker,Catostomus commersonii,4,-80.991639,37.626167,7/12/2012
+Sample192,49.8,bluegill,Lepomis macrochirus,1,-80.807,37.4008,10/27/2014
+Sample192,49.8,bluehead chub,Nocomis leptocephalus,53,-80.807,37.4008,10/27/2014
+Sample192,49.8,bluntnose minnow,Pimephales notatus,7,-80.807,37.4008,10/27/2014
+Sample192,49.8,central stoneroller,Campostoma anomalum,234,-80.807,37.4008,10/27/2014
+Sample192,49.8,fantail darter variant,Etheostoma flabellare,12,-80.807,37.4008,10/27/2014
+Sample192,49.8,green sunfish,Lepomis cyanellus,1,-80.807,37.4008,10/27/2014
+Sample192,49.8,greenside darter,Etheostoma blennioides,2,-80.807,37.4008,10/27/2014
+Sample192,49.8,largemouth bass,Micropterus salmoides,2,-80.807,37.4008,10/27/2014
+Sample192,49.8,longnose dace,Rhinichthys cataractae,3,-80.807,37.4008,10/27/2014
+Sample192,49.8,margined madtom,Noturus insignis,1,-80.807,37.4008,10/27/2014
+Sample192,49.8,northern hog sucker,Hypentelium nigricans,8,-80.807,37.4008,10/27/2014
+Sample192,49.8,redbreast sunfish,Lepomis auritus,1,-80.807,37.4008,10/27/2014
+Sample192,49.8,rock bass,Ambloplites rupestris,17,-80.807,37.4008,10/27/2014
+Sample192,49.8,rosyface shiner,Notropis rubellus,1,-80.807,37.4008,10/27/2014
+Sample192,49.8,smallmouth bass,Micropterus dolomieu,2,-80.807,37.4008,10/27/2014
+Sample192,49.8,spotfin shiner,Cyprinella spiloptera,1,-80.807,37.4008,10/27/2014
+Sample192,49.8,spotted bass,Micropterus punctulatus,5,-80.807,37.4008,10/27/2014
+Sample192,49.8,telescope shiner,Notropis telescopus,3,-80.807,37.4008,10/27/2014
+Sample192,49.8,tennessee darter,Etheostoma tenneseense,56,-80.807,37.4008,10/27/2014
+Sample192,49.8,white shiner,Luxilus albeolus,4,-80.807,37.4008,10/27/2014
+Sample192,49.8,white sucker,Catostomus commersonii,4,-80.807,37.4008,10/27/2014
+Sample192,49.8,whitetail shiner,Cyprinella galactura,1,-80.807,37.4008,10/27/2014
+Sample212,71.1,banded sculpin,Cottus carolinae,51,-81.7541,37.0263,9/25/2012
+Sample212,71.1,bigeye chub,Hybopsis amblops,3,-81.7541,37.0263,9/25/2012
+Sample212,71.1,blotched chub,Erimystax insignis,2,-81.7541,37.0263,9/25/2012
+Sample212,71.1,bluntnose minnow,Pimephales notatus,1,-81.7541,37.0263,9/25/2012
+Sample212,71.1,clinch sculpin,Cottus clinch,51,-81.7541,37.0263,9/25/2012
+Sample212,71.1,fantail darter,Etheostoma flabellare,15,-81.7541,37.0263,9/25/2012
+Sample212,71.1,greenside darter,Etheostoma blennioides,11,-81.7541,37.0263,9/25/2012
+Sample212,71.1,largescale stoneroller,Campostoma oligolepis,77,-81.7541,37.0263,9/25/2012
+Sample212,71.1,northern hog sucker,Hypentelium nigricans,6,-81.7541,37.0263,9/25/2012
+Sample212,71.1,rainbow trout,Oncorhynchus mykiss,4,-81.7541,37.0263,9/25/2012
+Sample212,71.1,redline darter,Etheostoma rufilineatum,8,-81.7541,37.0263,9/25/2012
+Sample212,71.1,rock bass,Ambloplites rupestris,20,-81.7541,37.0263,9/25/2012
+Sample212,71.1,saffron shiner,Notropis rubricroceus,11,-81.7541,37.0263,9/25/2012
+Sample212,71.1,striped shiner,Luxilus chrysocephalus,3,-81.7541,37.0263,9/25/2012
+Sample212,71.1,swannanoa darter,Etheostoma swannanoa,5,-81.7541,37.0263,9/25/2012
+Sample212,71.1,telescope shiner,Notropis telescopus,10,-81.7541,37.0263,9/25/2012
+Sample212,71.1,tennessee darter,Etheostoma tenneseense,53,-81.7541,37.0263,9/25/2012
+Sample212,71.1,tennessee shiner,Notropis leuciodus,5,-81.7541,37.0263,9/25/2012
+Sample212,71.1,warpaint shiner,Luxilus coccogenis,2,-81.7541,37.0263,9/25/2012
+Sample212,71.1,western blacknose dace,Rhinichthys obtusus,63,-81.7541,37.0263,9/25/2012
+Sample214,17,banded sculpin,Cottus carolinae,67,-83.355197,36.622979,9/8/2010
+Sample214,17,bigeye chub,Hybopsis amblops,14,-83.355197,36.622979,9/8/2010
+Sample214,17,fantail darter,Etheostoma flabellare,14,-83.355197,36.622979,9/8/2010
+Sample214,17,green sunfish,Lepomis cyanellus,1,-83.355197,36.622979,9/8/2010
+Sample214,17,greenside darter,Etheostoma blennioides,5,-83.355197,36.622979,9/8/2010
+Sample214,17,highland shiner,Notropis micropteryx,1,-83.355197,36.622979,9/8/2010
+Sample214,17,largescale stoneroller,Campostoma oligolepis,167,-83.355197,36.622979,9/8/2010
+Sample214,17,northern hog sucker,Hypentelium nigricans,12,-83.355197,36.622979,9/8/2010
+Sample214,17,rock bass,Ambloplites rupestris,18,-83.355197,36.622979,9/8/2010
+Sample214,17,striped shiner,Luxilus chrysocephalus,30,-83.355197,36.622979,9/8/2010
+Sample214,17,swannanoa darter,Etheostoma swannanoa,6,-83.355197,36.622979,9/8/2010
+Sample214,17,telescope shiner,Notropis telescopus,18,-83.355197,36.622979,9/8/2010
+Sample214,17,tennessee darter,Etheostoma tenneseense,13,-83.355197,36.622979,9/8/2010
+Sample214,17,tennessee shiner,Notropis leuciodus,1,-83.355197,36.622979,9/8/2010
+Sample214,17,western blacknose dace,Rhinichthys obtusus,138,-83.355197,36.622979,9/8/2010
+Sample214,17,white sucker,Catostomus commersonii,2,-83.355197,36.622979,9/8/2010
+Sample217,22.7,banded sculpin,Cottus carolinae,24,-81.91778,37.03583,11/15/2012
+Sample217,22.7,bigeye chub,Hybopsis amblops,4,-81.91778,37.03583,11/15/2012
+Sample217,22.7,black redhorse,Moxostoma duquesnei,1,-81.91778,37.03583,11/15/2012
+Sample217,22.7,creek chub,Semotilus atromaculatus,1,-81.91778,37.03583,11/15/2012
+Sample217,22.7,green sunfish,Lepomis cyanellus,1,-81.91778,37.03583,11/15/2012
+Sample217,22.7,largescale stoneroller,Campostoma oligolepis,67,-81.91778,37.03583,11/15/2012
+Sample217,22.7,northern hog sucker,Hypentelium nigricans,25,-81.91778,37.03583,11/15/2012
+Sample217,22.7,redline darter,Etheostoma rufilineatum,1,-81.91778,37.03583,11/15/2012
+Sample217,22.7,rock bass,Ambloplites rupestris,13,-81.91778,37.03583,11/15/2012
+Sample217,22.7,smallmouth bass,Micropterus dolomieu,2,-81.91778,37.03583,11/15/2012
+Sample217,22.7,striped shiner,Luxilus chrysocephalus,6,-81.91778,37.03583,11/15/2012
+Sample217,22.7,telescope shiner,Notropis telescopus,9,-81.91778,37.03583,11/15/2012
+Sample217,22.7,tennessee darter,Etheostoma tenneseense,6,-81.91778,37.03583,11/15/2012
+Sample217,22.7,tennessee shiner,Notropis leuciodus,14,-81.91778,37.03583,11/15/2012
+Sample217,22.7,western blacknose dace,Rhinichthys obtusus,1,-81.91778,37.03583,11/15/2012
+Sample217,22.7,white sucker,Catostomus commersonii,5,-81.91778,37.03583,11/15/2012
+Sample217,22.7,whitetail shiner,Cyprinella galactura,5,-81.91778,37.03583,11/15/2012
+Sample217,22.7,yellow bullhead,Ameiurus natalis,1,-81.91778,37.03583,11/15/2012
+Sample360,6.1,bigeye chub,Hybopsis amblops,7,-81.852556,38.217417,8/11/2009
+Sample360,6.1,bluegill,Lepomis macrochirus,1,-81.852556,38.217417,8/11/2009
+Sample360,6.1,bluntnose minnow,Pimephales notatus,38,-81.852556,38.217417,8/11/2009
+Sample360,6.1,central stoneroller,Campostoma anomalum,23,-81.852556,38.217417,8/11/2009
+Sample360,6.1,creek chub,Semotilus atromaculatus,31,-81.852556,38.217417,8/11/2009
+Sample360,6.1,fantail darter,Etheostoma flabellare,1,-81.852556,38.217417,8/11/2009
+Sample360,6.1,golden redhorse,Moxostoma erythrurum,2,-81.852556,38.217417,8/11/2009
+Sample360,6.1,greenside darter,Etheostoma blennioides,6,-81.852556,38.217417,8/11/2009
+Sample360,6.1,johnny darter,Etheostoma nigrum,6,-81.852556,38.217417,8/11/2009
+Sample360,6.1,least brook lamprey,Lampetra aepyptera,1,-81.852556,38.217417,8/11/2009
+Sample360,6.1,mimic shiner,Notropis volucellus,15,-81.852556,38.217417,8/11/2009
+Sample360,6.1,northern hog sucker,Hypentelium nigricans,2,-81.852556,38.217417,8/11/2009
+Sample360,6.1,rainbow darter,Etheostoma caeruleum,35,-81.852556,38.217417,8/11/2009
+Sample360,6.1,rock bass,Ambloplites rupestris,8,-81.852556,38.217417,8/11/2009
+Sample360,6.1,rosyface shiner,Notropis rubellus,14,-81.852556,38.217417,8/11/2009
+Sample360,6.1,sand shiner,Notropis stramineus,6,-81.852556,38.217417,8/11/2009
+Sample360,6.1,silverjaw minnow,Notropis buccatus,23,-81.852556,38.217417,8/11/2009
+Sample360,6.1,smallmouth bass,Micropterus dolomieu,19,-81.852556,38.217417,8/11/2009
+Sample360,6.1,spotfin shiner,Cyprinella spiloptera,10,-81.852556,38.217417,8/11/2009
+Sample360,6.1,striped shiner,Luxilus chrysocephalus,4,-81.852556,38.217417,8/11/2009
+Sample362,4.7,central stoneroller,Campostoma anomalum,78,-81.130028,38.3485,8/11/2009
+Sample362,4.7,creek chub,Semotilus atromaculatus,49,-81.130028,38.3485,8/11/2009
+Sample362,4.7,eastern blacknose dace,Rhinichthys atratulus,57,-81.130028,38.3485,8/11/2009
+Sample362,4.7,fantail darter,Etheostoma flabellare,4,-81.130028,38.3485,8/11/2009
+Sample362,4.7,johnny darter,Etheostoma nigrum,4,-81.130028,38.3485,8/11/2009
+Sample362,4.7,northern hog sucker,Hypentelium nigricans,13,-81.130028,38.3485,8/11/2009
+Sample362,4.7,rainbow darter,Etheostoma caeruleum,42,-81.130028,38.3485,8/11/2009
+Sample362,4.7,river chub,Nocomis micropogon,3,-81.130028,38.3485,8/11/2009
+Sample362,4.7,silverjaw minnow,Notropis buccatus,1,-81.130028,38.3485,8/11/2009
+Sample362,4.7,smallmouth bass,Micropterus dolomieu,1,-81.130028,38.3485,8/11/2009
+Sample362,4.7,striped shiner,Luxilus chrysocephalus,37,-81.130028,38.3485,8/11/2009
+Sample362,4.7,white sucker,Catostomus commersonii,5,-81.130028,38.3485,8/11/2009
+Sample363,8.4,central stoneroller,Campostoma anomalum,56,-81.520778,37.947611,8/13/2009
+Sample363,8.4,creek chub,Semotilus atromaculatus,7,-81.520778,37.947611,8/13/2009
+Sample363,8.4,eastern blacknose dace,Rhinichthys atratulus,6,-81.520778,37.947611,8/13/2009
+Sample363,8.4,green sunfish,Lepomis cyanellus,1,-81.520778,37.947611,8/13/2009
+Sample363,8.4,longnose dace,Rhinichthys cataractae,8,-81.520778,37.947611,8/13/2009
+Sample363,8.4,mottled sculpin,Cottus bairdii,10,-81.520778,37.947611,8/13/2009
+Sample363,8.4,northern hog sucker,Hypentelium nigricans,1,-81.520778,37.947611,8/13/2009
+Sample363,8.4,rainbow darter,Etheostoma caeruleum,3,-81.520778,37.947611,8/13/2009
+Sample363,8.4,river chub,Nocomis micropogon,1,-81.520778,37.947611,8/13/2009
+Sample363,8.4,rock bass,Ambloplites rupestris,2,-81.520778,37.947611,8/13/2009
+Sample363,8.4,smallmouth bass,Micropterus dolomieu,1,-81.520778,37.947611,8/13/2009
+Sample363,8.4,striped shiner,Luxilus chrysocephalus,4,-81.520778,37.947611,8/13/2009
+Sample371,18.3,central stoneroller,Campostoma anomalum,64,-81.544139,37.722306,8/23/2010
+Sample371,18.3,creek chub,Semotilus atromaculatus,64,-81.544139,37.722306,8/23/2010
+Sample371,18.3,greenside darter,Etheostoma blennioides,4,-81.544139,37.722306,8/23/2010
+Sample371,18.3,johnny darter,Etheostoma nigrum,1,-81.544139,37.722306,8/23/2010
+Sample371,18.3,mottled sculpin,Cottus bairdii,47,-81.544139,37.722306,8/23/2010
+Sample371,18.3,northern hog sucker,Hypentelium nigricans,16,-81.544139,37.722306,8/23/2010
+Sample371,18.3,rainbow darter,Etheostoma caeruleum,17,-81.544139,37.722306,8/23/2010
+Sample371,18.3,rosyface shiner,Notropis rubellus,2,-81.544139,37.722306,8/23/2010
+Sample371,18.3,variegate darter,Etheostoma variatum,3,-81.544139,37.722306,8/23/2010
+Sample371,18.3,western blacknose dace,Rhinichthys obtusus,45,-81.544139,37.722306,8/23/2010
+Sample371,18.3,white sucker,Catostomus commersonii,1,-81.544139,37.722306,8/23/2010
+Sample393,27.8,central stoneroller,Campostoma anomalum,25,-81.367111,37.525778,7/7/2010
+Sample393,27.8,creek chub,Semotilus atromaculatus,5,-81.367111,37.525778,7/7/2010
+Sample393,27.8,fantail darter,Etheostoma flabellare,4,-81.367111,37.525778,7/7/2010
+Sample393,27.8,greenside darter,Etheostoma blennioides,11,-81.367111,37.525778,7/7/2010
+Sample393,27.8,mottled sculpin,Cottus bairdii,205,-81.367111,37.525778,7/7/2010
+Sample393,27.8,northern hog sucker,Hypentelium nigricans,31,-81.367111,37.525778,7/7/2010
+Sample393,27.8,rainbow darter,Etheostoma caeruleum,18,-81.367111,37.525778,7/7/2010
+Sample393,27.8,western blacknose dace,Rhinichthys obtusus,334,-81.367111,37.525778,7/7/2010
+Sample393,27.8,white sucker,Catostomus commersonii,12,-81.367111,37.525778,7/7/2010
+Sample405,16.7,bigeye chub,Hybopsis amblops,19,-81.173111,38.483806,8/9/2010
+Sample405,16.7,bluegill,Lepomis macrochirus,1,-81.173111,38.483806,8/9/2010
+Sample405,16.7,bluntnose minnow,Pimephales notatus,51,-81.173111,38.483806,8/9/2010
+Sample405,16.7,central stoneroller,Campostoma anomalum,100,-81.173111,38.483806,8/9/2010
+Sample405,16.7,creek chub,Semotilus atromaculatus,103,-81.173111,38.483806,8/9/2010
+Sample405,16.7,fantail darter,Etheostoma flabellare,2,-81.173111,38.483806,8/9/2010
+Sample405,16.7,greenside darter,Etheostoma blennioides,15,-81.173111,38.483806,8/9/2010
+Sample405,16.7,johnny darter,Etheostoma nigrum,20,-81.173111,38.483806,8/9/2010
+Sample405,16.7,least brook lamprey,Lampetra aepyptera,2,-81.173111,38.483806,8/9/2010
+Sample405,16.7,longear sunfish,Lepomis megalotis,1,-81.173111,38.483806,8/9/2010
+Sample405,16.7,northern hog sucker,Hypentelium nigricans,39,-81.173111,38.483806,8/9/2010
+Sample405,16.7,rainbow darter,Etheostoma caeruleum,75,-81.173111,38.483806,8/9/2010
+Sample405,16.7,river chub,Nocomis micropogon,100,-81.173111,38.483806,8/9/2010
+Sample405,16.7,rock bass,Ambloplites rupestris,13,-81.173111,38.483806,8/9/2010
+Sample405,16.7,rosyface shiner,Notropis rubellus,57,-81.173111,38.483806,8/9/2010
+Sample405,16.7,sand shiner,Notropis stramineus,12,-81.173111,38.483806,8/9/2010
+Sample405,16.7,silver shiner,Notropis photogenis,3,-81.173111,38.483806,8/9/2010
+Sample405,16.7,silverjaw minnow,Notropis buccatus,9,-81.173111,38.483806,8/9/2010
+Sample405,16.7,smallmouth bass,Micropterus dolomieu,10,-81.173111,38.483806,8/9/2010
+Sample405,16.7,spotfin shiner,Cyprinella spiloptera,6,-81.173111,38.483806,8/9/2010
+Sample405,16.7,stonecat,Noturus flavus,2,-81.173111,38.483806,8/9/2010
+Sample405,16.7,striped shiner,Luxilus chrysocephalus,55,-81.173111,38.483806,8/9/2010
+Sample405,16.7,variegate darter,Etheostoma variatum,1,-81.173111,38.483806,8/9/2010
+Sample405,16.7,western blacknose dace,Rhinichthys obtusus,10,-81.173111,38.483806,8/9/2010
+Sample405,16.7,white sucker,Catostomus commersonii,4,-81.173111,38.483806,8/9/2010
+Sample427,8.5,creek chub,Semotilus atromaculatus,199,-81.746056,37.305028,6/28/2011
+Sample427,8.5,fantail darter,Etheostoma flabellare,21,-81.746056,37.305028,6/28/2011
+Sample427,8.5,mottled sculpin,Cottus bairdii,79,-81.746056,37.305028,6/28/2011
+Sample427,8.5,western blacknose dace,Rhinichthys obtusus,124,-81.746056,37.305028,6/28/2011
+Sample427,8.5,white sucker,Catostomus commersonii,59,-81.746056,37.305028,6/28/2011
+Sample477,3.3,central stoneroller,Campostoma anomalum,28,-81.472836,38.086075,7/30/2012
+Sample477,3.3,creek chub,Semotilus atromaculatus,50,-81.472836,38.086075,7/30/2012
+Sample477,3.3,green sunfish,Lepomis cyanellus,1,-81.472836,38.086075,7/30/2012
+Sample477,3.3,mottled sculpin,Cottus bairdii,75,-81.472836,38.086075,7/30/2012
+Sample477,3.3,northern hog sucker,Hypentelium nigricans,6,-81.472836,38.086075,7/30/2012
+Sample477,3.3,western blacknose dace,Rhinichthys obtusus,35,-81.472836,38.086075,7/30/2012
+Sample600,8.9,central stoneroller,Campostoma anomalum,93,-82.546513,37.051801,9/8/2010
+Sample600,8.9,creek chub,Semotilus atromaculatus,4,-82.546513,37.051801,9/8/2010
+Sample600,8.9,mottled sculpin,Cottus bairdii,21,-82.546513,37.051801,9/8/2010
+Sample600,8.9,northern hog sucker,Hypentelium nigricans,6,-82.546513,37.051801,9/8/2010
+Sample600,8.9,rainbow trout,Oncorhynchus mykiss,4,-82.546513,37.051801,9/8/2010
+Sample600,8.9,western blacknose dace,Rhinichthys obtusus,58,-82.546513,37.051801,9/8/2010
+Sample600,8.9,white sucker,Catostomus commersonii,1,-82.546513,37.051801,9/8/2010
+Sample605,12.1,central stoneroller,Campostoma anomalum,183,-82.232614,37.093313,9/9/2010
+Sample605,12.1,northern hog sucker,Hypentelium nigricans,1,-82.232614,37.093313,9/9/2010
+Sample605,12.1,rainbow darter,Etheostoma caeruleum,2,-82.232614,37.093313,9/9/2010
+Sample605,12.1,rainbow trout,Oncorhynchus mykiss,1,-82.232614,37.093313,9/9/2010
+Sample605,12.1,tennessee snubnose darter,Etheostoma simoterum,158,-82.232614,37.093313,9/9/2010
+Sample605,12.1,western blacknose dace,Rhinichthys obtusus,597,-82.232614,37.093313,9/9/2010
+Sample605,12.1,white sucker,Catostomus commersonii,4,-82.232614,37.093313,9/9/2010
