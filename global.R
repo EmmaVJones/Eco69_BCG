@@ -698,8 +698,8 @@ Bug_BCG_Model_GIS <- function(dfInCorrectFormat){
     # Taxa list QA, check to make sure no NA's for attributes after joined to correct Subbasin
     comment1 <- if(sum(is.na(sampleathand$attLevel))>0){
       NArows <- filter(sampleathand, is.na(attLevel))
-      commonNames <- paste(as.character(NArows$CommonName),sep=', ',collapse=', ')
-      paste(commonNames,'not attributed in the',NArows$Subbasin,'Subbasin',sep=' ')[1]
+      FinalID <- paste(as.character(NArows$Family),as.character(NArows$FinalID),sep=' ')
+      paste(FinalID,'not attributed',sep=' ')[1]
     }else(' ') #no taxa attribute list problems
     
     # Transfer site location and Sampling window comments
