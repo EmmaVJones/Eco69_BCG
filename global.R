@@ -12,8 +12,13 @@ suppressMessages({
   library(tidyr)
   library(ggplot2)
   library(purrr)
+  library(lubridate)
 })
 
+# Yes this bring in teh shapefile twice but need it in global.R for bug model to recognize it, 
+#  dont want to write separate reactive function in server.R to output gis comments
+eco69_wgs84 <- readOGR('data/','Ecoregion69_level3_WGS84')
+#eco69_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','Ecoregion69_level3_WGS84')
 
 
 #----------------------------------Taxa metric functions---------------------------------------------------------
@@ -542,12 +547,12 @@ BCG_Model_GIS <- function(dfInCorrectFormat){
     lapply(function(x) x[!(names(x) %in% c('SampleName'))]) # remove SampleName column, housekeeping
   
   # establish blank dataframe to store data
-  result <- data.frame(SampleName=NA,Catchment=NA,nominalTier=NA,nominalMembership=NA,secondMembership=NA,runnerupTier=NA
+  result <- data.frame(SampleName=NA,Date=NA,Catchment=NA,nominalTier=NA,nominalMembership=NA,secondMembership=NA,runnerupTier=NA
                        ,close=NA,Model=NA,FishAttributeComments=NA,TotalTaxaComments=NA,CatchmentSizeComments=NA,SampleWindowComments=NA)
+  #### Get attribute data in
+  att <- readRDS('data/attributes.RDS')
   
   for(i in 1:length(splits)){ #loop through each dataframe in the list of dataframes and do:
-    #### Get attribute data in
-    att <- readRDS('data/attributes.RDS')
     splits[[i]] <- join(splits[[i]],att,by=c('ScientificName','CommonName','Subbasin_short'))
     # basic housekeeping
     print(i)
@@ -579,60 +584,60 @@ BCG_Model_GIS <- function(dfInCorrectFormat){
     if(splits[[i]]$Subbasin_short[1] %in% c('UNew','MNew_WV','MNew_VA','LNew','Greenbrier','Gauley')){
       if(splits[[i]]$Catchment[1] < 5){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),
+          result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),
                                        Model='AboveFalls,Small',FishAttributeComments=comment1,TotalTaxaComments=comment2,
                                        CatchmentSizeComments=comment3,SampleWindowComments=comment4))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),
+        }else(result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),
                                            Model='AboveFalls,Small,NOBKT',FishAttributeComments=comment1,
                                            TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 5 & splits[[i]]$Catchment[1] < 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),
+          result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),
                                        Model='AboveFalls,Small',FishAttributeComments=comment1,
                                        TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)
-                          ,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),
+                          ,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),
                                  Model='AboveFalls,MediumLarge',FishAttributeComments=comment1,
                                  TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),
+        }else(result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),
                                            Model='AboveFalls,Small,NOBKT',FishAttributeComments=comment1,
                                            TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)
-                              ,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),
+                              ,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),
                                      Model='AboveFalls,MediumLarge,NOBKT',FishAttributeComments=comment1,
                                      TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),
+          result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),
                                        Model='AboveFalls,MediumLarge',FishAttributeComments=comment1,
                                        TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),
+        }else(result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),
                                            Model='AboveFalls,MediumLarge,NOBKT',FishAttributeComments=comment1,
                                            TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }
     }else{
       if(splits[[i]]$Catchment[1] < 5){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',
+          result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',
                                        FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),
+        }else(result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),
                                            Model='Other,Small,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
                                            CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 5 & splits[[i]]$Catchment[1] < 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',
+          result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',
                                        FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)
-                          ,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',
+                          ,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',
                                  FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),
+        }else(result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),
                                            Model='Other,Small,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
                                            CatchmentSizeComments=comment3,SampleWindowComments=comment4)
-                              ,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),
+                              ,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),
                                      Model='Other,MediumLarge,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
                                      CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',
+          result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',
                                        FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),
+        }else(result <- rbind(result,cbind(Date=splits[[i]]$Date[1],Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),
                                            Model='Other,MediumLarge,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
                                            CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }
@@ -643,19 +648,47 @@ BCG_Model_GIS <- function(dfInCorrectFormat){
 }
 
 
+
 ##----------------------------------- FINAL BUG MODEL ------------------------------------------------------------------
 Bug_BCG_Model_GIS <- function(dfInCorrectFormat){
-  # split input dataframe by sampples, return list of dataframes
+  # Make sure sites are in Eco69
+  polys <- eco69_wgs84  
+  # Make shapefile from dfInCorrectFormat
+  sites_shp <- dfInCorrectFormat
+  coordinates(sites_shp) <- ~Longitude+Latitude
+  sites_shp@proj4string <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 ") #first need to give it it's own projection 
+  # Make proper date format to test against sampling window
+  datedf <- mutate(dfInCorrectFormat,lubridate=mdy(Date),Year=year(lubridate),JulianDay=yday(lubridate))
+  
+  Comments <- data.frame(SiteLocationComment=NA,SamplingWindowComment=NA)
+  
+  for(i in 1:length(sites_shp)){
+    # Intersect site lat/long with eco69 poly
+    sites_int <- over(sites_shp[i,],polys)
+    Comments[i,1] <- ifelse(sites_int$NAME=='Central Appalachians',' ','Site does not fall in Ecoregion 69 (EPA Level 3)')
+    # Sampling window test
+    Comments[i,2] <- if(datedf$Year[i] %in% c('1992','1996','2000','2004','2008','2012','2016','2020','2024','2028')){
+      # Leap Years
+      ifelse(datedf$JulianDay[i]>=61&datedf$JulianDay[i]<=167|datedf$JulianDay[i]>=214&datedf$JulianDay[i]<=335," ","Sample not within sampling window")
+    }else{
+      # Normal Years
+      ifelse(datedf$JulianDay[i]>=60&datedf$JulianDay[i]<=166|datedf$JulianDay[i]>=213&datedf$JulianDay[i]<=334," ","Sample not within sampling window")}
+    }
+  dfInCorrectFormat <- cbind(dfInCorrectFormat,Comments)
+    
+  # split input dataframe by samples, return list of dataframes
   splits <-split(dfInCorrectFormat,dfInCorrectFormat$SampleName,drop=T)%>% 
     lapply(function(x) x[!(names(x) %in% c('SampleName'))]) # remove SampleName column, housekeeping
   
   # establish blank dataframe to store data
-  result <- data.frame(SampleName=NA,Catchment=NA,nominalTier=NA,nominalMembership=NA,secondMembership=NA,runnerupTier=NA
-                       ,close=NA,Comments=NA)
+  result <- data.frame(SampleName=NA,Date=NA,Catchment=NA,nominalTier=NA,nominalMembership=NA,secondMembership=NA,runnerupTier=NA
+                       ,close=NA,GISComments=NA,TaxaComments=NA,SamplingWindowComments=NA)
+  #### Get attribute data in
+  att <- readRDS('data/bug_att.RDS')
+  
+    
   
   for(i in 1:length(splits)){ #loop through each dataframe in the list of dataframes and do:
-    #### Get attribute data in
-    att <-readRDS('bug_att.RDS')
     splits[[i]] <- join(splits[[i]],att,by=c('FinalID'))
     # basic housekeeping
     print(i)
@@ -669,12 +702,15 @@ Bug_BCG_Model_GIS <- function(dfInCorrectFormat){
       paste(commonNames,'not attributed in the',NArows$Subbasin,'Subbasin',sep=' ')[1]
     }else(' ') #no taxa attribute list problems
     
-    ## Additional comments (sample window,catchment size?)
+    # Transfer site location and Sampling window comments
+    siteComment <- unique(splits[[i]]$SiteLocationComment)
+    windowComment <- unique(splits[[i]]$SamplingWindowComment)
     
     # Run Model
-    result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],
+    result <- rbind(result,cbind(Date=splits[[i]]$Date[1],
+                                 Catchment=splits[[i]]$Catchment[1],
                                  Bug_Model(samplename,sampleathand),
-                                 Comments=comment1))
+                                 GISComments=siteComment,TaxaComments=comment1,SamplingWindowComments=windowComment))
     result<-filter(result,!(SampleName=='NA'))}
   return(result)  
 }

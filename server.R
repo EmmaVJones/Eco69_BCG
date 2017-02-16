@@ -1,15 +1,21 @@
 source('global.R')
-template <- read.csv('data/template.csv')
-#shp_wgs84 <- readOGR('data/','AboveOther_final')
-shp_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','AboveOther_final')
+fishtemplate <- read.csv('data/fishtemplate.csv')
+bugtemplate <- read.csv('data/bugtemplate.csv')
+shp_wgs84 <- readOGR('data/','AboveOther_final')
+#eco69_wgs84 <- readOGR('data/','Ecoregion69_level3_WGS84')
+#shp_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','AboveOther_final')
+#eco69_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','Ecoregion69_level3_WGS84')
 dat <- read.csv('data/sampleList_GIS.csv')
-options(digits=3)
+#options(digits=3)
 
 shinyServer(function(input, output, session) {
-  ## Tab 1, bring in taxa data
+  
+  ##-----------------------------  FISH ---------------------------------------------------------------------
+  
+  ## Fish Data Upload Tab, bring in FSIH taxa data
   # Download taxa list template
-  output$downloadTemplate <- downloadHandler(filename=function(){'template.csv'},
-                                             content=function(file){write.csv(template,file)})
+  output$downloadTemplate <- downloadHandler(filename=function(){'fishtemplate.csv'},
+                                             content=function(file){write.csv(fishtemplate,file)})
   
   # Upload taxa list
   inputFile <- reactive({inFile <- input$sites
@@ -26,7 +32,7 @@ shinyServer(function(input, output, session) {
     select(-CommonName)%>%rename(CommonName=CommonName2)%>%select(SampleName,Catchment,CommonName,everything())
   })
   
-  ## Tab 2, connect subbasins
+  ## Fish Subbasin Connection Tab, connect subbasins
   # Empty leaflet map
   output$Map <- renderLeaflet({
     pal <- colorFactor(c("blue","red"),levels=shp_wgs84@data$AboveOther)
@@ -78,8 +84,8 @@ shinyServer(function(input, output, session) {
                  popup=paste(sep="<br/>",strong('Station:'),subB()$SampleName,strong('Date Sampled:'),subB()$Date))}})
   
   
-  ## Tab 3, run the model
-  # BCG Model, need to put in modal!!!!!!!!!!!!!! 
+  ## Fish BCG Model Results Tab, run the model
+  # BCG Model
   BCGresults <- eventReactive(input$runModel,{withProgress(message='Processing Sites',value=10,{
     BCG_Model_GIS(subB())})})
   
@@ -90,15 +96,41 @@ shinyServer(function(input, output, session) {
               options=list(lengthMenu=list(c(5,10,25,-1),c('5','10','25','All')),
               pageLength=10,scrollX=TRUE,fixedHeaders=TRUE))}})
   
-  # Download taxa list template
-  output$downloadResults <- downloadHandler(filename=function(){paste(gsub('.csv','',input$sites),'_',Sys.Date(),'.csv',sep='')},
+  # Download Fish Results
+  output$downloadResults <- downloadHandler(filename=function(){paste(gsub('.csv','',input$sites),'_Eco69BCGFishModel_',Sys.Date(),'.csv',sep='')},
                                             content=function(file){
                                               write.csv(BCGresults(),file)})
   
-
+  ##-----------------------------  BUGS ---------------------------------------------------------------------
   
+  ## Bug Data Upload Tab, bring in BUG taxa data
+  # Download taxa list template
+  output$downloadTemplate_Bug <- downloadHandler(filename=function(){'bugtemplate.csv'},
+                                             content=function(file){write.csv(bugtemplate,file)})
   
+  # Upload taxa list
+  inputFile_Bug <- reactive({inFile <- input$sites_Bug
+  if(is.null(inFile))
+    return(NULL)
+  read.csv(inFile$datapath)
+  })
+  output$inputTable_Bug <- renderTable({inputFile_Bug()})
   
+  ## Bug BCG Model Results Tab, run the model
+  # Bug BCG Model
+  BCGresults_Bug <- eventReactive(input$runBugModel,{withProgress(message='Processing Sites',value=10,{
+    Bug_BCG_Model_GIS(inputFile_Bug())})})
   
+  # Display Bug BCG model results
+  options(digits=3)
+  output$BCGMacroresults <- renderDataTable({if(!is.null(BCGresults_Bug())){
+    datatable(BCGresults_Bug(),rownames = FALSE,
+              options=list(lengthMenu=list(c(5,10,25,-1),c('5','10','25','All')),
+                           pageLength=10,scrollX=TRUE,fixedHeaders=TRUE))}})
+  
+  # Download taxa list template
+  output$downloadResults_Bug <- downloadHandler(filename=function(){paste(gsub('.csv','',input$sites_Bug),'_Eco69BCGBugModel_',Sys.Date(),'.csv',sep='')},
+                                            content=function(file){
+                                              write.csv(BCGresults_Bug(),file)})
   
 })
