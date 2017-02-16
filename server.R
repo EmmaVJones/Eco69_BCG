@@ -1,6 +1,7 @@
 source('global.R')
 template <- read.csv('data/template.csv')
-shp_wgs84 <- readOGR('data/','AboveOther_final')
+#shp_wgs84 <- readOGR('data/','AboveOther_final')
+shp_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','AboveOther_final')
 dat <- read.csv('data/sampleList_GIS.csv')
 options(digits=3)
 
@@ -17,8 +18,13 @@ shinyServer(function(input, output, session) {
   read.csv(inFile$datapath)
   })
   output$inputTable <- renderTable({inputFile()})
-  
-  
+  # Make sure all common names lower case to match with attribute table
+  inputFile2 <- reactive({inFile <- input$sites
+  if(is.null(inFile))
+    return(NULL)
+  mutate(inputFile(),CommonName2=tolower(CommonName))%>%# Fix any EDAS capitilization Issues
+    select(-CommonName)%>%rename(CommonName=CommonName2)%>%select(SampleName,Catchment,CommonName,everything())
+  })
   
   ## Tab 2, connect subbasins
   # Empty leaflet map
@@ -51,11 +57,12 @@ shinyServer(function(input, output, session) {
                                                ,'Upper Guyandotte'='UGuy','Lower Guyandotte'='LGuy'
                                                ,'Upper Clinch, Tennessee, Virginia'='UClinch'
                                                ,'Twelvepole'='Tpole'),warn_missing=F)) # Rename values as they come out of shapefile to match attribute lists
+             
   }
   
   # Run subbasin connection function
-  subB <- eventReactive(input$connectSubB, #{withProgress(message='Processing Sites',value=10,{
-   SubbasinConnection(inputFile(),shp_wgs84))#})})
+  subB <- eventReactive(input$connectSubB, {withProgress(message='Processing Sites',value=10,{
+   SubbasinConnection(inputFile2(),shp_wgs84)})})
   
   # Make table at below map for users to review subbasin connections
   output$stationsWithSubbasins <- renderTable({
@@ -79,10 +86,12 @@ shinyServer(function(input, output, session) {
   # Display BCG model results
   options(digits=3)
   output$BCGresults <- renderDataTable({if(!is.null(BCGresults())){
-    datatable(BCGresults(),options = list(lengthMenu=list(c(5,10,25,-1),c('5','10','25','All')),pageLength=10))}})
+    datatable(BCGresults(),rownames = FALSE,
+              options=list(lengthMenu=list(c(5,10,25,-1),c('5','10','25','All')),
+              pageLength=10,scrollX=TRUE,fixedHeaders=TRUE))}})
   
   # Download taxa list template
-  output$downloadResults <- downloadHandler(filename=function(){paste(input$sites,Sys.Date(),'.csv',sep='')},
+  output$downloadResults <- downloadHandler(filename=function(){paste(gsub('.csv','',input$sites),'_',Sys.Date(),'.csv',sep='')},
                                             content=function(file){
                                               write.csv(BCGresults(),file)})
   

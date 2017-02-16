@@ -1,4 +1,8 @@
 shinyUI(fluidPage(theme = "yeti.css", #sandstone #slate good until final DT output # united good except orange
+                  tagList(
+                    singleton(tags$head(tags$script(src='//cdn.datatables.net/fixedheader/2.1.2/js/dataTables.fixedHeader.min.js',type='text/javascript'))),
+                    singleton(tags$head(tags$link(href='//cdn.datatables.net/fixedheader/2.1.2/css/dataTables.fixedHeader.css',rel='stylesheet',type='text/css')))
+                  ), 
                   navbarPage('Ecoregion 69 BCG Model: Fish',
                              tabPanel('About',fluidRow(column(10,
                                                               h5("This app was created to run the Biological Condition 
@@ -55,7 +59,7 @@ shinyUI(fluidPage(theme = "yeti.css", #sandstone #slate good until final DT outp
                                         actionButton("sendtoDB","Send to Database")),
                                       mainPanel(
                                         h4(strong('BCG Model Results'),
-                                           dataTableOutput('BCGresults')))
+                                           DT::dataTableOutput('BCGresults')))
                              ))))
 
 

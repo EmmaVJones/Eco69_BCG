@@ -7,6 +7,7 @@ suppressMessages({
   library(rgdal)
   library(raster)
   library(data.table)
+  library(plyr)
   library(dplyr)
   library(tidyr)
   library(ggplot2)
@@ -14,13 +15,6 @@ suppressMessages({
 })
 
 
-library(shiny)
-library(leaflet)
-library(raster)
-library(rgdal)
-library(plyr)
-library(dplyr)
-library(readxl)
 
 #----------------------------------Taxa metric functions---------------------------------------------------------
 # Number of Total Taxa
@@ -58,22 +52,85 @@ P_Dom56t <- function(sample){(
 T_123 <- function(sample){sum(sample$attLevel %in% c(1,2,3))}
 # % Attribute 5&6 taxa
 P_56 <- function(sample){(sum(sample$attLevel %in% c('5','6i','6m','6t'))/totTax(sample))*100}
+
+# Bug-specific functions
+# Percent dominant (for later calculations)
+P_dom <- function(sample){sample$Count/totInd(sample)}
+# Number of Attribute 2 Taxa
+T_2 <- function(sample){sum(sample$attLevel %in% c(2))}
+# Number of Attribute 2 & 3 Taxa
+T_23 <- function(sample){sum(sample$attLevel %in% c(2,3))}
+# Number of Attribute 2 & 3 EPT Taxa
+T_23EPT <- function(sample){
+  df <- filter(sample,P_C_O %in% c("Ephemeroptera","Plecoptera","Trichoptera"))
+  sum(df$attLevel %in% c(2,3))}
+# Top 5% most dominant Attribute 4,5,6 individuals
+P5_domAtt456 <- function(sample){
+  df <- mutate(sample,dom=(Count/totInd(sample))*100)%>%filter(attLevel %in% c(4,5,6))%>%arrange(-dom)
+  sum(df$dom[1:5])}
+# Percent Attribute 2&3 individuals
+PI_23 <- function(sample){
+  df <- filter(sample,attLevel %in% c(2,3))
+  (sum(df$Count)/totInd(sample))*100}
+# Percent Attribute 2 & 3 EPT Individuals
+PI_23EPT <- function(sample){
+  df <- filter(sample,P_C_O %in% c("Ephemeroptera","Plecoptera","Trichoptera") & attLevel %in% c(2,3))
+  (sum(df$Count)/totInd(sample))*100}
+# Percent most dominant Attribute 4 OR 5 individuals
+PI1_domAtt45 <- function(sample){
+  df <- mutate(sample,dom=(Count/totInd(sample))*100)%>%filter(attLevel %in% c(4,5))%>%arrange(-dom)
+  df$dom[1]}
+# Number of Attribute 2,3, & 4 Taxa
+T_234 <- function(sample){sum(sample$attLevel %in% c(2,3,4))}
+# Number of EPT Taxa
+T_EPT <- function(sample){
+  df <- filter(sample,P_C_O %in% c("Ephemeroptera","Plecoptera","Trichoptera"))
+  nrow(df)}
+# % Attribute 5 Taxa
+P_5 <- function(sample){(sum(sample$attLevel %in% c(5))/totTax(sample))*100}
+# % Attribute 5 and midge individuals
+PI_5midge <- function(sample){
+  df <- filter(sample,attLevel %in% c(5)|FinalID=='Chironomidae')
+  (sum(df$Count)/totInd(sample))*100}
+# Percent EPT individuals
+PI_EPT <- function(sample){
+  df <- filter(sample,P_C_O %in% c("Ephemeroptera","Plecoptera","Trichoptera"))
+  (sum(df$Count)/totInd(sample))*100}
+# Percent Diptera individuals
+PI_Diptera <- function(sample){
+  df <- filter(sample,P_C_O == "Diptera")
+  (sum(df$Count)/totInd(sample))*100}
+
 ## ---------------------------------------------------------------------------------------------------------
-# Master metric that outputs dataframe of all results
+# Master metric that outputs dataframe of all results for fish
 masterMetric <- function(sampleName,sample){
   data.frame(SampleName=sampleName,totTax=totTax(sample),totInd=totInd(sample),T_12=T_12(sample),P_123=P_123(sample)
              ,PI_123=PI_123(sample),PI_5=PI_5(sample),PI_56t=PI_56t(sample),T_6=T_6(sample)
              ,T_6t=T_6t(sample),T_darter=T_darter(sample),N_bTrout=N_bTrout(sample),P_Dom56t=P_Dom56t(sample)
              ,T_123=T_123(sample),P_56=P_56(sample))}
 
-# BCG Fuzzy Membership logic
+# Master metric that outputs dataframe of all results for bugs
+masterMetric_bug <- function(sampleName,sample){
+  data.frame(SampleName=sampleName,totTax=totTax(sample),totInd=totInd(sample),T_2=T_2(sample),T_23=T_23(sample),
+             T_23EPT=T_23EPT(sample),P5_domAtt456=P5_domAtt456(sample),PI_23=PI_23(sample),PI_23EPT=PI_23EPT(sample),
+             PI_5=PI_5(sample),PI1_domAtt45=PI1_domAtt45(sample),T_234=T_234(sample),T_EPT=T_EPT(sample),
+             P_5=P_5(sample),PI_5midge=PI_5midge(sample),PI_EPT=PI_EPT(sample),PI_Diptera=PI_Diptera(sample))}
+
+# BCG Fuzzy Membership logic Fish
 fuzzyMembership <- function(metric,low,high){metric/(high-low)-low/(high-low)}
 
+# BCG Fuzzy Membership logic Bug
+fuzzyMembership_bug <- function(metric,low,high){(metric-low)/(high-low)}
+
+# Final fuzzy membership calc Fish
 fmFinal <- function(x){
   if(x>=1){return(1)}else(y=x)
-  if(y<=0){return(0)}else(return(x))
-}
-## ---------------------------- Level Rules ---------------------------------------------------------------------
+  if(y<=0){return(0)}else(return(x))}
+
+# Final fuzzy membership calc Bug
+fmFinal_bug <- function(x){min(1,max(0,x))}
+
+## ---------------------------- Level Rules FISH -----------------------------------------------------------------
 # BCG level logic, Other Medium/Large
 otherMedLarge_BCGlevel2 <- function(test){
   data.frame(fm_totTax=fmFinal(fuzzyMembership(test$totTax,10,20)),fm_T_12=fmFinal(fuzzyMembership(test$T_12,0,1))
@@ -236,7 +293,36 @@ aboveFallsSmall_BCGlevel4alt2_NOBKT <- function(test){
 aboveFallsSmall_BCGlevel5_NOBKT <- function(test){
   data.frame(fm_totTax=fmFinal(fuzzyMembership(test$totTax,2,5)),fm_totInd=fmFinal(fuzzyMembership(test$totInd,50,60)))}
 
+##-------------------------------- BCG Level Rules BUG ---------------------------------------------------------------------
+# BCG level logic, Bug BCG Level 2
+Bug_BCGlevel2 <- function(test){
+  data.frame(fm_totTax=fmFinal_bug(fuzzyMembership_bug(test$totTax,20,28)),
+             fm_T_2=fmFinal_bug(fuzzyMembership_bug(test$T_2,1,3)),
+             fm_T_23=fmFinal_bug(fuzzyMembership_bug(test$T_23,12,18)),
+             fm_T_23EPT=fmFinal_bug(fuzzyMembership_bug(test$T_23EPT,10,15)),
+             fm_P5_domAtt456=fmFinal_bug(fuzzyMembership_bug(test$P5_domAtt456,40,30)))}
+# BCG level logic, Bug BCG Level 3
+Bug_BCGlevel3 <- function(test){
+  data.frame(fm_T_23=fmFinal_bug(fuzzyMembership_bug(test$T_23,6,10)),
+             fm_PI_23=fmFinal_bug(fuzzyMembership_bug(test$PI_23,25,35)),
+             fm_PI_23EPT=fmFinal_bug(fuzzyMembership_bug(test$PI_23EPT,20,30)),
+             fm_PI_5=fmFinal_bug(fuzzyMembership_bug(test$PI_5,10,5)),
+             fm_PI1_domAtt45=fmFinal_bug(fuzzyMembership_bug(test$PI1_domAtt45,50,40)))}
+# BCG level logic, Bug BCG Level 4
+Bug_BCGlevel4 <- function(test){
+  data.frame(fm_T_23=fmFinal_bug(fuzzyMembership_bug(test$T_23,2,4)),
+             fm_T_234=fmFinal_bug(fuzzyMembership_bug(test$T_234,10,14)),
+             fm_T_EPT=fmFinal_bug(fuzzyMembership_bug(test$T_EPT,5,9)),
+             fm_P_5=fmFinal_bug(fuzzyMembership_bug(test$P_5,35,25)),
+             fm_PI_5midge=fmFinal_bug(fuzzyMembership_bug(test$PI_5midge,65,55)))}
+# BCG level logic, Bug BCG Level 5
+Bug_BCGlevel5 <- function(test){
+  data.frame(fm_totTax=fmFinal_bug(fuzzyMembership_bug(test$totTax,4,12)),
+             fm_T_EPT=fmFinal_bug(fuzzyMembership_bug(test$T_EPT,0,5)),
+             fm_PI_EPT=fmFinal_bug(fuzzyMembership_bug(test$PI_EPT,5,10)),
+             fm_PI_Diptera=fmFinal_bug(fuzzyMembership_bug(test$PI_Diptera,90,80)))}
 
+##----------------------------- FISH Models ---------------------------------------------------------------------------
 ### Other Medium/Large BCG Model
 OtherMedLargeModel <- function(sampleName,taxaListFromOneSite){
   metricResults <- masterMetric(sampleName,taxaListFromOneSite)
@@ -427,8 +513,28 @@ AboveFallsSmallModel_NOBKT <- function(sampleName,taxaListFromOneSite){
   return(final)
 }
 
-### GIS COMPONENT
+##----------------------------- Bug Model ---------------------------------------------------------------------------
+Bug_Model <- function(sampleName,taxaListFromOneSite){
+  metricResults <- masterMetric_bug(sampleName,taxaListFromOneSite)
+  levelresult <- data.frame(SampleName=metricResults[1],
+                            BCGlevel2=min(Bug_BCGlevel2(metricResults)),
+                            BCGlevel3=min(Bug_BCGlevel3(metricResults)),
+                            BCGlevel4=min(Bug_BCGlevel4(metricResults)),
+                            BCGlevel5=min(Bug_BCGlevel5(metricResults)))%>%
+    mutate(Level2=BCGlevel2,Level3=min(1-BCGlevel2,BCGlevel3),Level4=min(1-sum(Level2,Level3),BCGlevel4),
+           Level5=min(1-sum(Level2,Level3,Level4),BCGlevel5),Level6=1-sum(Level2,Level3,Level4,Level5))
+  placehold<-sort(levelresult[6:10],TRUE)[2] # pick second highest BCG level, can't be done in mutate statement
+  final <- data.frame(SampleName=metricResults[1]
+                      ,nominalTier=colnames(levelresult[,6:10])[apply(levelresult[6:10],1,which.max)]
+                      ,nominalMembership=apply(levelresult[,6:10],1,max)
+                      ,secondMembership=placehold[1,]
+                      ,runnerupTier=ifelse(placehold[1,]==0,"",colnames(placehold)))%>%
+    mutate(close=ifelse(nominalMembership-secondMembership<0.1,"tie"
+                        ,ifelse(nominalMembership-secondMembership<0.2,"yes","")))
+  return(final)
+}
 
+##----------------------------------- FISH MODEL DETERMINATION ---------------------------------------------------
 # Final BCG Model
 BCG_Model_GIS <- function(dfInCorrectFormat){
   # split input dataframe by sampples, return list of dataframes
@@ -436,9 +542,8 @@ BCG_Model_GIS <- function(dfInCorrectFormat){
     lapply(function(x) x[!(names(x) %in% c('SampleName'))]) # remove SampleName column, housekeeping
   
   # establish blank dataframe to store data
-  result <- data.frame(matrix(NA, ncol = 9, nrow = 1))
-  names(result) <- c('SampleName','Catchment','nominalTier','nominalMembership','secondMembership','runnerupTier'
-                     ,'close','Model','Comment')
+  result <- data.frame(SampleName=NA,Catchment=NA,nominalTier=NA,nominalMembership=NA,secondMembership=NA,runnerupTier=NA
+                       ,close=NA,Model=NA,FishAttributeComments=NA,TotalTaxaComments=NA,CatchmentSizeComments=NA,SampleWindowComments=NA)
   
   for(i in 1:length(splits)){ #loop through each dataframe in the list of dataframes and do:
     #### Get attribute data in
@@ -456,41 +561,121 @@ BCG_Model_GIS <- function(dfInCorrectFormat){
       paste(commonNames,'not attributed in the',NArows$Subbasin,'Subbasin',sep=' ')[1]
     }else(' ') #no taxa attribute list problems
     
+    # Total Taxa QA, identify when results based on < 75 total fish
+    comment2 <- ifelse(sum(sampleathand$Count)<75,
+                       "Model results based on sample containing < 75 fish"," ")
+    
+    # Notify user that two models will be run because catchment size close to cut off
+    comment3 <- paste(ifelse(splits[[i]]$Catchment[1] < 3,"Catchment < 3 sq mi"," "),
+                      ifelse(splits[[i]]$Catchment[1] > 5 & splits[[i]]$Catchment[1] < 15,
+                       "Small and Medium/Large model run"," "),sep=" ")
+    
+    # Sampling window comment
+    step1 <- mutate(sampleathand, Date1=as.Date(as.character(sampleathand$Date),format="%m/%d/%Y"),
+                       Month=as.numeric(format(Date1,"%m")),SampleWindowComments=ifelse(Month>7&Month<11,'','Not in Sampling Window'))
+    comment4 <- step1[1,13]
+    
     # Model decisions based on Subbasin and Catchment size (mi2)
     if(splits[[i]]$Subbasin_short[1] %in% c('UNew','MNew_WV','MNew_VA','LNew','Greenbrier','Gauley')){
       if(splits[[i]]$Catchment[1] < 5){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),Model='AboveFalls,Small',Comment=comment1))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),Model='AboveFalls,Small,NOBKT',Comment=comment1)))
+          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),
+                                       Model='AboveFalls,Small',FishAttributeComments=comment1,TotalTaxaComments=comment2,
+                                       CatchmentSizeComments=comment3,SampleWindowComments=comment4))
+        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),
+                                           Model='AboveFalls,Small,NOBKT',FishAttributeComments=comment1,
+                                           TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 5 & splits[[i]]$Catchment[1] < 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),Model='AboveFalls,Small',Comment=comment1)
-                          ,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),Model='AboveFalls,MediumLarge',Comment=comment1))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),Model='AboveFalls,Small,NOBKT',Comment=comment1)
-                              ,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),Model='AboveFalls,MediumLarge,NOBKT',Comment=comment1)))
+          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel(samplename,sampleathand),
+                                       Model='AboveFalls,Small',FishAttributeComments=comment1,
+                                       TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)
+                          ,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),
+                                 Model='AboveFalls,MediumLarge',FishAttributeComments=comment1,
+                                 TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
+        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsSmallModel_NOBKT(samplename,sampleathand),
+                                           Model='AboveFalls,Small,NOBKT',FishAttributeComments=comment1,
+                                           TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)
+                              ,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),
+                                     Model='AboveFalls,MediumLarge,NOBKT',FishAttributeComments=comment1,
+                                     TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),Model='AboveFalls,MediumLarge',Comment=comment1))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),Model='AboveFalls,MediumLarge,NOBKT',Comment=comment1)))
+          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel(samplename,sampleathand),
+                                       Model='AboveFalls,MediumLarge',FishAttributeComments=comment1,
+                                       TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
+        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],AboveFallsMedLargeModel_NOBKT(samplename,sampleathand),
+                                           Model='AboveFalls,MediumLarge,NOBKT',FishAttributeComments=comment1,
+                                           TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }
     }else{
       if(splits[[i]]$Catchment[1] < 5){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',Comment=comment1))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),Model='Other,Small,NOBKT',Comment=comment1)))
+          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',
+                                       FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
+        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),
+                                           Model='Other,Small,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
+                                           CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 5 & splits[[i]]$Catchment[1] < 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',Comment=comment1)
-                          ,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',Comment=comment1))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),Model='Other,Small,NOBKT',Comment=comment1)
-                              ,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),Model='Other,MediumLarge,NOBKT',Comment=comment1)))
+          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel(samplename,sampleathand),Model='Other,Small',
+                                       FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4)
+                          ,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',
+                                 FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
+        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherSmallModel_NOBKT(samplename,sampleathand),
+                                           Model='Other,Small,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
+                                           CatchmentSizeComments=comment3,SampleWindowComments=comment4)
+                              ,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),
+                                     Model='Other,MediumLarge,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
+                                     CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }else if(splits[[i]]$Catchment[1] > 15){
         if(any(splits[[i]]$CommonName %in% c('brook trout'))){
-          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',Comment=comment1))
-        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),Model='Other,MediumLarge,NOBKT',Comment=comment1)))
+          result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel(samplename,sampleathand),Model='Other,MediumLarge',
+                                       FishAttributeComments=comment1,TotalTaxaComments=comment2,CatchmentSizeComments=comment3,SampleWindowComments=comment4))
+        }else(result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],OtherMedLargeModel_NOBKT(samplename,sampleathand),
+                                           Model='Other,MediumLarge,NOBKT',FishAttributeComments=comment1,TotalTaxaComments=comment2,
+                                           CatchmentSizeComments=comment3,SampleWindowComments=comment4)))
       }
     }
     result<-filter(result,!(SampleName=='NA'))
   }
   return(result)
 }
+
+
+##----------------------------------- FINAL BUG MODEL ------------------------------------------------------------------
+Bug_BCG_Model_GIS <- function(dfInCorrectFormat){
+  # split input dataframe by sampples, return list of dataframes
+  splits <-split(dfInCorrectFormat,dfInCorrectFormat$SampleName,drop=T)%>% 
+    lapply(function(x) x[!(names(x) %in% c('SampleName'))]) # remove SampleName column, housekeeping
+  
+  # establish blank dataframe to store data
+  result <- data.frame(SampleName=NA,Catchment=NA,nominalTier=NA,nominalMembership=NA,secondMembership=NA,runnerupTier=NA
+                       ,close=NA,Comments=NA)
+  
+  for(i in 1:length(splits)){ #loop through each dataframe in the list of dataframes and do:
+    #### Get attribute data in
+    att <-readRDS('bug_att.RDS')
+    splits[[i]] <- join(splits[[i]],att,by=c('FinalID'))
+    # basic housekeeping
+    print(i)
+    samplename <- names(splits)[i]
+    sampleathand <- data.frame(splits[[i]])
+    
+    # Taxa list QA, check to make sure no NA's for attributes after joined to correct Subbasin
+    comment1 <- if(sum(is.na(sampleathand$attLevel))>0){
+      NArows <- filter(sampleathand, is.na(attLevel))
+      commonNames <- paste(as.character(NArows$CommonName),sep=', ',collapse=', ')
+      paste(commonNames,'not attributed in the',NArows$Subbasin,'Subbasin',sep=' ')[1]
+    }else(' ') #no taxa attribute list problems
+    
+    ## Additional comments (sample window,catchment size?)
+    
+    # Run Model
+    result <- rbind(result,cbind(Catchment=splits[[i]]$Catchment[1],
+                                 Bug_Model(samplename,sampleathand),
+                                 Comments=comment1))
+    result<-filter(result,!(SampleName=='NA'))}
+  return(result)  
+}
+
