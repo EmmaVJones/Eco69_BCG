@@ -1,9 +1,9 @@
 source('global.R')
 fishtemplate <- read.csv('data/fishtemplate.csv')
 bugtemplate <- read.csv('data/bugtemplate.csv')
-shp_wgs84 <- readOGR('data/','AboveOther_final')
+#shp_wgs84 <- readOGR('data/','AboveOther_final')
 #eco69_wgs84 <- readOGR('data/','Ecoregion69_level3_WGS84')
-#shp_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','AboveOther_final')
+shp_wgs84 <- readOGR('data/','AboveOther_final')
 #eco69_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','Ecoregion69_level3_WGS84')
 dat <- read.csv('data/sampleList_GIS.csv')
 #options(digits=3)
@@ -116,6 +116,7 @@ shinyServer(function(input, output, session) {
   })
   output$inputTable_Bug <- renderTable({inputFile_Bug()})
   
+
   ## Bug BCG Model Results Tab, run the model
   # Bug BCG Model
   BCGresults_Bug <- eventReactive(input$runBugModel,{withProgress(message='Processing Sites',value=10,{

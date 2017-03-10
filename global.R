@@ -15,10 +15,8 @@ suppressMessages({
   library(lubridate)
 })
 
-# Yes this bring in teh shapefile twice but need it in global.R for bug model to recognize it, 
-#  dont want to write separate reactive function in server.R to output gis comments
 eco69_wgs84 <- readOGR('data/','Ecoregion69_level3_WGS84')
-#eco69_wgs84 <- readOGR('C:/HardDriveBackup/R/BCG/Eco69_BCG/data','Ecoregion69_level3_WGS84')
+
 
 
 #----------------------------------Taxa metric functions---------------------------------------------------------
@@ -72,7 +70,7 @@ T_23EPT <- function(sample){
 # Top 5% most dominant Attribute 4,5,6 individuals
 P5_domAtt456 <- function(sample){
   df <- mutate(sample,dom=(Count/totInd(sample))*100)%>%filter(attLevel %in% c(4,5,6))%>%arrange(-dom)
-  sum(df$dom[1:5])}
+  sum(df$dom[1:5],na.rm=T)}
 # Percent Attribute 2&3 individuals
 PI_23 <- function(sample){
   df <- filter(sample,attLevel %in% c(2,3))
@@ -665,14 +663,14 @@ Bug_BCG_Model_GIS <- function(dfInCorrectFormat){
   for(i in 1:length(sites_shp)){
     # Intersect site lat/long with eco69 poly
     sites_int <- over(sites_shp[i,],polys)
-    Comments[i,1] <- ifelse(sites_int$NAME=='Central Appalachians',' ','Site does not fall in Ecoregion 69 (EPA Level 3)')
+    Comments[i,1] <- ifelse(is.na(sites_int$NAME),'Site does not fall in Ecoregion 69 (EPA Level 3)',' ')
     # Sampling window test
     Comments[i,2] <- if(datedf$Year[i] %in% c('1992','1996','2000','2004','2008','2012','2016','2020','2024','2028')){
       # Leap Years
-      ifelse(datedf$JulianDay[i]>=61&datedf$JulianDay[i]<=167|datedf$JulianDay[i]>=214&datedf$JulianDay[i]<=335," ","Sample not within sampling window")
+      ifelse(datedf$JulianDay[i]>=61&datedf$JulianDay[i]<=167|datedf$JulianDay[i]>=214&datedf$JulianDay[i]<=335," ","Sample not within Virginia sampling window")
     }else{
       # Normal Years
-      ifelse(datedf$JulianDay[i]>=60&datedf$JulianDay[i]<=166|datedf$JulianDay[i]>=213&datedf$JulianDay[i]<=334," ","Sample not within sampling window")}
+      ifelse(datedf$JulianDay[i]>=60&datedf$JulianDay[i]<=166|datedf$JulianDay[i]>=213&datedf$JulianDay[i]<=334," ","Sample not within Virginia sampling window")}
     }
   dfInCorrectFormat <- cbind(dfInCorrectFormat,Comments)
     
@@ -698,7 +696,7 @@ Bug_BCG_Model_GIS <- function(dfInCorrectFormat){
     # Taxa list QA, check to make sure no NA's for attributes after joined to correct Subbasin
     comment1 <- if(sum(is.na(sampleathand$attLevel))>0){
       NArows <- filter(sampleathand, is.na(attLevel))
-      FinalID <- paste(as.character(NArows$Family),as.character(NArows$FinalID),sep=' ')
+      FinalID <- paste(as.character(NArows$Family),as.character(NArows$FinalID),sep=' ',collapse=', ')
       paste(FinalID,'not attributed',sep=' ')[1]
     }else(' ') #no taxa attribute list problems
     
